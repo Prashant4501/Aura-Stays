@@ -12,7 +12,7 @@ A high-reliability, multi-tenant Hotel & Resort Reservation Platform built for c
 
 ## 🌐 Live Deployments
 
-- **Web Application**: [https://aura-stays.vercel.app](https://aura-stays.vercel.app)
+- **Web Application**: [https://aura-stays-two.vercel.app](https://aura-stays-two.vercel.app)
 - **Backend API**: [https://aura-stays-api.onrender.com](https://aura-stays-api.onrender.com)
 - **API Health Check**: [https://aura-stays-api.onrender.com/api/health](https://aura-stays-api.onrender.com/api/health)
 - **API Base Route**: `https://aura-stays-api.onrender.com/api/v1`
@@ -411,7 +411,7 @@ The application is deployed across managed production infrastructure:
 | `MONGODB_URI` | MongoDB Atlas replica set URI | `mongodb+srv://<user>:<password>@cluster.mongodb.net/hotel_reservation?retryWrites=true&w=majority` |
 | `JWT_SECRET` | Signing secret for access tokens | *(64-char random hex)* |
 | `JWT_REFRESH_SECRET` | Signing secret for refresh tokens | *(64-char random hex)* |
-| `CLIENT_URL` | Allowed frontend origin for CORS | `https://aura-stays.vercel.app` |
+| `CLIENT_URL` | Allowed frontend origin for CORS | `https://aura-stays-two.vercel.app` |
 
 #### Frontend Environment (`client`)
 | Variable | Purpose | Example Value |
@@ -432,7 +432,7 @@ Verify the deployed application with the following sanity checks:
 
 1. **API Health**: Access `https://aura-stays-api.onrender.com/api/health` — returns `{"status":"ok","database":"connected"}`.
 2. **Public Data**: Access `https://aura-stays-api.onrender.com/api/v1/properties` — returns active hotel portfolio.
-3. **SPA Navigation**: Refresh any sub-route on `https://aura-stays.vercel.app/explore` or `/login` — confirms `vercel.json` rewrite works without 404s.
+3. **SPA Navigation**: Refresh any sub-route on `https://aura-stays-two.vercel.app/explore` or `/login` — confirms `vercel.json` rewrite works without 404s.
 4. **Authentication**: Log in with demo pill `Guest 1` or `Hotel Manager 1` on the login page.
 5. **Booking Flow**: Complete a booking and verify the 15-minute courtesy hold timer and server-side pricing breakdown.
 6. **Remote Concurrency Test**: Run the concurrency stress test against the deployed API:
