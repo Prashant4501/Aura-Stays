@@ -140,6 +140,7 @@ export const register = async (req, res, next) => {
         guest_number: guest.guest_number,
       },
       accessToken,
+      refreshToken,
     });
   } catch (error) {
     next(error);
@@ -198,6 +199,7 @@ export const login = async (req, res, next) => {
         guest_number: guestNumber,
       },
       accessToken,
+      refreshToken,
     });
   } catch (error) {
     next(error);
@@ -209,7 +211,7 @@ export const login = async (req, res, next) => {
  */
 export const refresh = async (req, res, next) => {
   try {
-    const token = req.cookies?.refreshToken;
+    const token = req.cookies?.refreshToken || req.body?.refreshToken;
     if (!token) {
       throw new UnauthorizedError('Refresh token required', null, 'REFRESH_TOKEN_REQUIRED');
     }

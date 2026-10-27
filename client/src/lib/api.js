@@ -3,6 +3,17 @@ import axios from 'axios';
 let inMemoryToken = null;
 let logoutCallback = null;
 
+// Normalize API base URL cleanly across environments
+const rawUrl = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || '/api/v1').trim();
+const normalized = rawUrl.endsWith('/') ? rawUrl.slice(0, -1) : rawUrl;
+export const API_BASE_URL = normalized.endsWith('/api/v1')
+  ? normalized
+  : normalized.endsWith('/api')
+  ? `${normalized}/v1`
+  : normalized.startsWith('http')
+  ? `${normalized}/api/v1`
+  : normalized;
+
 export const setAccessToken = (token) => {
   inMemoryToken = token;
 };
@@ -14,7 +25,7 @@ export const registerLogoutCallback = (cb) => {
 };
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || '/api/v1',
+  baseURL: API_BASE_URL,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -75,9 +86,10 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
+        const storedRefreshToken = localStorage.getItem('aura_refresh_token');
         const refreshResponse = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL || '/api/v1'}/auth/refresh`,
-          {},
+          `${API_BASE_URL}/auth/refresh`,
+          { refreshToken: storedRefreshToken || undefined },
           { withCredentials: true }
         );
 

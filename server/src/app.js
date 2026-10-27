@@ -17,10 +17,34 @@ app.set('trust proxy', 1);
 // Security middleware
 app.use(helmet());
 
-// CORS configuration
+// CORS configuration with dynamic whitelist and Vercel support
+const configuredOrigins = (env.CLIENT_URL || '')
+  .split(',')
+  .map((o) => o.trim().replace(/\/$/, ''))
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: env.CLIENT_URL,
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      const normalizedOrigin = origin.replace(/\/$/, '');
+      if (
+        configuredOrigins.includes(normalizedOrigin) ||
+        (env.NODE_ENV !== 'production' && /^http:\/\/localhost(:\d+)?$/.test(origin))
+      ) {
+        return callback(null, true);
+      }
+
+      try {
+        const url = new URL(origin);
+        if (url.hostname.endsWith('.vercel.app')) {
+          return callback(null, true);
+        }
+      } catch {}
+
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
   })
 );

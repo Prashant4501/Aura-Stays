@@ -23,9 +23,15 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        const refreshRes = await api.post('/auth/refresh');
+        const storedRefreshToken = localStorage.getItem('aura_refresh_token');
+        const refreshRes = await api.post('/auth/refresh', {
+          refreshToken: storedRefreshToken || undefined,
+        });
         if (refreshRes.data?.accessToken) {
           setAccessToken(refreshRes.data.accessToken);
+          if (refreshRes.data?.refreshToken) {
+            localStorage.setItem('aura_refresh_token', refreshRes.data.refreshToken);
+          }
           await fetchCurrentUser();
         }
       } catch {
@@ -39,6 +45,7 @@ export const AuthProvider = ({ children }) => {
     registerLogoutCallback(() => {
       setUser(null);
       setAccessToken(null);
+      localStorage.removeItem('aura_refresh_token');
     });
 
     initAuth();
@@ -46,16 +53,22 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const res = await api.post('/auth/login', { email, password });
-    const { accessToken, user: loggedUser } = res.data;
+    const { accessToken, refreshToken, user: loggedUser } = res.data;
     setAccessToken(accessToken);
+    if (refreshToken) {
+      localStorage.setItem('aura_refresh_token', refreshToken);
+    }
     setUser(loggedUser);
     return loggedUser;
   };
 
   const register = async (data) => {
     const res = await api.post('/auth/register', data);
-    const { accessToken, user: newUser } = res.data;
+    const { accessToken, refreshToken, user: newUser } = res.data;
     setAccessToken(accessToken);
+    if (refreshToken) {
+      localStorage.setItem('aura_refresh_token', refreshToken);
+    }
     setUser(newUser);
     return newUser;
   };
@@ -66,6 +79,7 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       console.warn('Logout API call failed:', err);
     } finally {
+      localStorage.removeItem('aura_refresh_token');
       setAccessToken(null);
       setUser(null);
     }
