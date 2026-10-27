@@ -1,0 +1,43 @@
+{
+  "name": "hotel-reservation-server",
+  "version": "1.0.0",
+  "description": "Hotel Reservation Platform - Server API & DB Layer",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "seed": "node scripts/seed.js",
+    "test": "node --test --test-concurrency=1 tests/**/*.test.js",
+    "lint": "eslint src scripts tests",
+    "format": "prettier --write \"src/**/*.{js,json}\" \"scripts/**/*.{js,json}\" \"tests/**/*.{js,json}\""
+  },
+  "keywords": [
+    "mern",
+    "hotel-reservation",
+    "mongodb",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.1",
+    "prettier": "^3.4.2",
+    "supertest": "^7.3.1"
+  }
+}

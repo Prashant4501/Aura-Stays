@@ -1,0 +1,24 @@
+{
+  "name": "hotel-reservation-platform",
+  "version": "1.0.0",
+  "description": "Hotel, Resort & Property Reservation Management Platform (MERN)",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n \"server,client\" -c \"cyan,magenta\" \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "seed": "npm --prefix server run seed",
+    "test": "npm --prefix server test",
+    "test:concurrency": "node scripts/concurrency-test.js",
+    "test:security": "node scripts/security-test.js",
+    "lint": "npm --prefix server run lint",
+    "format": "npm --prefix server run format"
+  },
+  "keywords": [
+    "mern",
+    "hotel-reservation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}
